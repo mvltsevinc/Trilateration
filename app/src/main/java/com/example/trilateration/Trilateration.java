@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialog;
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialogListener;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 
@@ -23,7 +25,7 @@ import java.util.List;
 public class Trilateration extends AppCompatActivity {
     private static final String TAG = "Trilateration";
     
-    TextView txtWifiName1,txtWifiName2,txtWifiName3,txtResult;
+    TextView txtWifiName1,txtWifiName2,txtWifiName3;
     EditText txtWifi1X,txtWifi2X,txtWifi3X,txtWifi1Y,txtWifi2Y,txtWifi3Y;
     Button btnHesapla;
     List<ScanResult> selectedResults;
@@ -35,7 +37,6 @@ public class Trilateration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trilateration);
 
-        txtResult = findViewById(R.id.txtResult);
         txtWifiName1 = findViewById(R.id.txtWifiName1);
         txtWifiName2 = findViewById(R.id.txtWifiName2);
         txtWifiName3 = findViewById(R.id.txtWifiName3);
@@ -96,8 +97,20 @@ public class Trilateration extends AppCompatActivity {
 
                 // the answer
                 double[] centroid = optimum.getPoint().toArray();
-                txtResult.setText(centroid[0] + " , " + centroid[1]);
-                //Toast.makeText(this, ""+ centroid[0] + "  " + centroid[1], Toast.LENGTH_LONG).show();
+
+                new TTFancyGifDialog.Builder(Trilateration.this)
+                        .setTitle("Your Location")
+                        .setMessage("("+ centroid[0]+","+centroid[1]+")")
+                        .setPositiveBtnText("OK")
+                        .setPositiveBtnBackground("#22b573")
+                        .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
+                        .isCancellable(true)
+                        .OnPositiveClicked(new TTFancyGifDialogListener() {
+                            @Override
+                            public void OnClick() {
+                            }
+                        })
+                        .build();
             }
         });
 

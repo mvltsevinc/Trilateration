@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonScan = (Button) findViewById(R.id.buttonScan);
         buttonScan.setOnClickListener(this);
         buttonCalc = (Button) findViewById(R.id.buttonCalc);
+        buttonCalc.setEnabled(false);
         listViewWifi = (ListView)findViewById(R.id.list);
 
         selectedResults = new ArrayList<>();
@@ -75,14 +76,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listViewWifi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SparseBooleanArray sp=listViewWifi.getCheckedItemPositions();
                 selectedResults.clear();
+                SparseBooleanArray checkedItemPositions = listViewWifi.getCheckedItemPositions();
+                final int checkedItemCount = checkedItemPositions.size();
+                for (int i = 0; i < checkedItemCount; i++) {
+                    int key = checkedItemPositions.keyAt(i);
 
-                String str="";
-                for(int i=0;i<sp.size();i++)
-                {
-                    if(!selectedResults.contains(results.get(i))){
+                    if (checkedItemPositions.get(key)) {
                         selectedResults.add(results.get(i));
+                        if (selectedResults.size() == 3) {
+                            buttonCalc.setEnabled(true);
+                            buttonCalc.setBackgroundColor(getColor(R.color.colorPrimary));
+                        } else {
+                            buttonCalc.setEnabled(false);
+                            buttonCalc.setBackgroundColor(getColor(R.color.Gray));
+                        }
                     }
                 }
             }
