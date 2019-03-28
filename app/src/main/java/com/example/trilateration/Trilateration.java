@@ -19,6 +19,7 @@ import com.lemmingapex.trilateration.TrilaterationFunction;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,10 +98,12 @@ public class Trilateration extends AppCompatActivity {
 
                 // the answer
                 double[] centroid = optimum.getPoint().toArray();
+                DecimalFormat df = new DecimalFormat("#.##");
+
 
                 new TTFancyGifDialog.Builder(Trilateration.this)
                         .setTitle("Your Location")
-                        .setMessage("("+ centroid[0]+","+centroid[1]+")")
+                        .setMessage("("+ df.format(centroid[0])+","+df.format(centroid[1])+")")
                         .setPositiveBtnText("OK")
                         .setPositiveBtnBackground("#22b573")
                         .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
