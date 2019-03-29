@@ -114,7 +114,7 @@ public class Trilateration extends AppCompatActivity {
 
                     new TTFancyGifDialog.Builder(Trilateration.this)
                             .setTitle("Your Location")
-                            .setMessage("("+ df.format(centroid[0])+","+df.format(centroid[1])+")")
+                            .setMessage("X: "+ df.format(centroid[0])+"  Y: "+df.format(centroid[1]))
                             .setPositiveBtnText("OK")
                             .setPositiveBtnBackground("#22b573")
                             .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
