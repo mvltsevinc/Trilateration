@@ -84,36 +84,49 @@ public class Trilateration extends AppCompatActivity {
         btnHesapla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPositions[0][0] = Double.valueOf(txtWifi1X.getText().toString());
-                mPositions[0][1] = Double.valueOf(txtWifi1Y.getText().toString());
-                mPositions[1][0] = Double.valueOf(txtWifi2X.getText().toString());
-                mPositions[1][1] = Double.valueOf(txtWifi2Y.getText().toString());
-                mPositions[2][0] = Double.valueOf(txtWifi3X.getText().toString());
-                mPositions[2][1] = Double.valueOf(txtWifi3Y.getText().toString());
+                if (    txtWifi1X.getText().toString().trim().isEmpty() ||
+                        txtWifi1Y.getText().toString().trim().isEmpty() ||
+                        txtWifi2X.getText().toString().trim().isEmpty() ||
+                        txtWifi2Y.getText().toString().trim().isEmpty() ||
+                        txtWifi3X.getText().toString().trim().isEmpty() ||
+                        txtWifi3Y.getText().toString().trim().isEmpty()){
 
-                double[][] positions = mPositions;
+                    Toast.makeText(getApplicationContext(), "Lütfen Tüm Alanları Doğru Şekilde Doldurunuz !", Toast.LENGTH_LONG).show();
+                }
+                else{
 
-                NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
-                LeastSquaresOptimizer.Optimum optimum = solver.solve();
+                    mPositions[0][0] = Double.valueOf(txtWifi1X.getText().toString());
+                    mPositions[0][1] = Double.valueOf(txtWifi1Y.getText().toString());
+                    mPositions[1][0] = Double.valueOf(txtWifi2X.getText().toString());
+                    mPositions[1][1] = Double.valueOf(txtWifi2Y.getText().toString());
+                    mPositions[2][0] = Double.valueOf(txtWifi3X.getText().toString());
+                    mPositions[2][1] = Double.valueOf(txtWifi3Y.getText().toString());
 
-                // the answer
-                double[] centroid = optimum.getPoint().toArray();
-                DecimalFormat df = new DecimalFormat("#.##");
+                    double[][] positions = mPositions;
+
+                    NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
+                    LeastSquaresOptimizer.Optimum optimum = solver.solve();
+
+                    // the answer
+                    double[] centroid = optimum.getPoint().toArray();
+                    DecimalFormat df = new DecimalFormat("#.##");
 
 
-                new TTFancyGifDialog.Builder(Trilateration.this)
-                        .setTitle("Your Location")
-                        .setMessage("("+ df.format(centroid[0])+","+df.format(centroid[1])+")")
-                        .setPositiveBtnText("OK")
-                        .setPositiveBtnBackground("#22b573")
-                        .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
-                        .isCancellable(true)
-                        .OnPositiveClicked(new TTFancyGifDialogListener() {
-                            @Override
-                            public void OnClick() {
-                            }
-                        })
-                        .build();
+                    new TTFancyGifDialog.Builder(Trilateration.this)
+                            .setTitle("Your Location")
+                            .setMessage("("+ df.format(centroid[0])+","+df.format(centroid[1])+")")
+                            .setPositiveBtnText("OK")
+                            .setPositiveBtnBackground("#22b573")
+                            .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
+                            .isCancellable(true)
+                            .OnPositiveClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
+                                }
+                            })
+                            .build();
+
+                }
             }
         });
 
