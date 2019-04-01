@@ -99,7 +99,7 @@ public class TestTrilateration extends AppCompatActivity {
                             .setMessage("X: "+ df.format(centroid[0])+"  Y: "+df.format(centroid[1]))
                             .setPositiveBtnText("OK")
                             .setPositiveBtnBackground("#22b573")
-                            .setGifResource(R.drawable.mapslocation)      //pass your gif, png or jpg
+                            .setGifResource(R.drawable.location)      //pass your gif, png or jpg
                             .isCancellable(true)
                             .OnPositiveClicked(new TTFancyGifDialogListener() {
                                 @Override
