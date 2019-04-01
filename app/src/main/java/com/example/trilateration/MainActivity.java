@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             item.put(results.get(i).SSID,String.valueOf(results.get(i).level));
 
             wifiList.add(results.get(i).SSID + "  (" + results.get(i).level + ")" + "*" +  results.get(i).frequency);
-            adapter.notifyDataSetChanged();
         }
+        adapter.notifyDataSetChanged();
     }
 
 
