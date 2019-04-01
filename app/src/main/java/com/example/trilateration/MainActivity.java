@@ -71,19 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 results = wifi.getScanResults();
                 size = results.size();
-                wifiList.clear();
-                adapter.notifyDataSetChanged();
-                wifi.startScan();
-
-               // Toast.makeText(this, "Scanning...." + size, Toast.LENGTH_SHORT).show();
-
-                for(int i=0;i<size; i++){
-                    HashMap<String, String> item = new HashMap<String, String>();
-                    item.put(results.get(i).SSID,String.valueOf(results.get(i).level));
-
-                    wifiList.add(results.get(i).SSID + "  (" + results.get(i).level + ")" + "*" +  results.get(i).frequency);
-                }
-                adapter.notifyDataSetChanged();
             }
 
 
