@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view)
     {
         wifiList.clear();
+        adapter.notifyDataSetChanged();
         wifi.startScan();
 
         Toast.makeText(this, "Scanning...." + size, Toast.LENGTH_SHORT).show();
