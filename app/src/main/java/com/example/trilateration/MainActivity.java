@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttonScan;
     Button buttonCalc;
     List<ScanResult> results;
-    List<ScanResult> selectedResults;
+    List<String> selectedResults;
     int size = 0;
 
     ArrayList<String> wifiList = new ArrayList<>();
@@ -80,23 +80,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listViewWifi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedResults.clear();
-                SparseBooleanArray checkedItemPositions = listViewWifi.getCheckedItemPositions();
-                final int checkedItemCount = checkedItemPositions.size();
-                for (int i = 0; i < checkedItemCount; i++) {
-                    int key = checkedItemPositions.keyAt(i);
-
-                    if (checkedItemPositions.get(key)) {
-                        selectedResults.add(results.get(i));
-                        if (selectedResults.size() == 3) {
-                            buttonCalc.setEnabled(true);
-                            buttonCalc.setBackgroundColor(getColor(R.color.colorPrimary));
-                        } else {
-                            buttonCalc.setEnabled(false);
-                            buttonCalc.setBackgroundColor(getColor(R.color.Gray));
-                        }
-                    }
+                String str = wifiList.get((int)id);
+                selectedResults.add(str);
+                if (selectedResults.size() == 3) {
+                    buttonCalc.setEnabled(true);
+                    buttonCalc.setBackgroundColor(getColor(R.color.colorPrimary));
+                } else {
+                    buttonCalc.setEnabled(false);
+                    buttonCalc.setBackgroundColor(getColor(R.color.Gray));
                 }
+
+
             }
         });
 
@@ -104,7 +98,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),Trilateration.class);
-                intent.putExtra("wifi", (Serializable) selectedResults);
+                intent.putStringArrayListExtra("wifi",(ArrayList<String>)selectedResults);
+                String str = "";
+                /*for (int i = 0; i < selectedResults.size(); i++){
+                    str+=selectedResults.get(i);
+
+                }*/
+                //Toast.makeText(mContext, str, Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             HashMap<String, String> item = new HashMap<String, String>();
             item.put(results.get(i).SSID,String.valueOf(results.get(i).level));
 
-            wifiList.add(results.get(i).SSID + "  (" + results.get(i).level + ")" + "*" +  results.get(i).frequency);
+            wifiList.add(results.get(i).SSID + "|" + results.get(i).level + "|" +  results.get(i).frequency);
         }
         adapter.notifyDataSetChanged();
     }

@@ -22,6 +22,7 @@ import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Trilateration extends AppCompatActivity {
     private static final String TAG = "Trilateration";
@@ -29,7 +30,7 @@ public class Trilateration extends AppCompatActivity {
     TextView txtWifiName1,txtWifiName2,txtWifiName3;
     EditText txtWifi1X,txtWifi2X,txtWifi3X,txtWifi1Y,txtWifi2Y,txtWifi3Y;
     Button btnHesapla;
-    List<ScanResult> selectedResults;
+    List<String> selectedResults;
     double[][] mPositions;
     double[] mDistances;
 
@@ -55,21 +56,42 @@ public class Trilateration extends AppCompatActivity {
         mPositions = new double[3][2];
 
         Intent intent = getIntent();
-        selectedResults = (List<ScanResult>) intent.getSerializableExtra("wifi");
+        selectedResults = (List<String>) intent.getStringArrayListExtra("wifi");
         //Toast.makeText(this, "" + selectedResults.get(0).SSID, Toast.LENGTH_SHORT).show();
+        String wifi1 = selectedResults.get(0);
+        String wifi2 = selectedResults.get(1);
+        String wifi3 = selectedResults.get(2);
+        StringTokenizer tokens1 = new StringTokenizer(wifi1,"|");
+        StringTokenizer tokens2 = new StringTokenizer(wifi2,"|");
+        StringTokenizer tokens3 = new StringTokenizer(wifi3,"|");
 
         // Set Wifi Name TextViews
-        txtWifiName1.setText(selectedResults.get(0).SSID);
-        txtWifiName2.setText(selectedResults.get(1).SSID);
-        txtWifiName3.setText(selectedResults.get(2).SSID);
+        txtWifiName1.setText(tokens1.nextToken());
+        txtWifiName2.setText(tokens2.nextToken());
+        txtWifiName3.setText(tokens3.nextToken());
 
         Log.d(TAG, "onCreate: "+ selectedResults.size());
 
        for(int i = 0; i< selectedResults.size(); i++){
-            double signalLevel = selectedResults.get(i).level;
-            double signalFrequency = selectedResults.get(i).frequency;
-            double distance = calculateDistance(signalLevel,signalFrequency);
-            mDistances[i] = distance;
+           if (i == 0){
+               double signalLevel = Double.valueOf(tokens1.nextToken());
+               double signalFrequency = Double.valueOf(tokens1.nextToken());
+               double distance = calculateDistance(signalLevel,signalFrequency);
+               mDistances[i] = distance;
+           }
+           else if (i == 1){
+               double signalLevel = Double.valueOf(tokens2.nextToken());
+               double signalFrequency = Double.valueOf(tokens2.nextToken());
+               double distance = calculateDistance(signalLevel,signalFrequency);
+               mDistances[i] = distance;
+           }else {
+               double signalLevel = Double.valueOf(tokens3.nextToken());
+               double signalFrequency = Double.valueOf(tokens3.nextToken());
+               double distance = calculateDistance(signalLevel,signalFrequency);
+               mDistances[i] = distance;
+
+           }
+
         }
 
 
